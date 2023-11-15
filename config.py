@@ -1,4 +1,3 @@
-BLANC = 0
-NOIR = 1
-
-seq1 = []
+BLANC = 1
+VIDE = 0
+NOIR = -1
