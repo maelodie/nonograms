@@ -1,4 +1,5 @@
 import numpy as np
+from config import *
 
 def est_coloriable_rec(j: int, l: int, sequence: list, memo: np.array):
     """
@@ -15,6 +16,9 @@ def est_coloriable_rec(j: int, l: int, sequence: list, memo: np.array):
     -------
     - True si la ligne est coloriable jusqu'à la colonne j, False sinon.
     """
+    if memo[j,l] != VIDE :
+        return memo[j,l] # on connaît déja la valeur grâce a la mémoisation
+    
     # Cas de base : la séquence est vide, donc la coloration est toujours possible
     if l == 0:
         memo[j,l] = True
