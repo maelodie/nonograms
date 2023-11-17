@@ -42,10 +42,10 @@ def lire_instance(src):
     grille = creer_tab(len(sequences_lignes), len(sequences_colonnes), VIDE)
     return grille, sequences_lignes, sequences_colonnes
 
-# Exemple d'utilisation
-fichier_instance = "instances//instances//0.txt"
-_, sequences_lignes, sequences_colonnes = lire_instance(fichier_instance)
+# # Exemple d'utilisation
+# fichier_instance = "instances//instances//0.txt"
+# _, sequences_lignes, sequences_colonnes = lire_instance(fichier_instance)
 
-# Affichage des résultats
-print("Sequences pour les lignes :", sequences_lignes)
-print("Sequences pour les colonnes :", sequences_colonnes)
+# # Affichage des résultats
+# print("Sequences pour les lignes :", sequences_lignes)
+# print("Sequences pour les colonnes :", sequences_colonnes)
