@@ -88,12 +88,12 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: np.array, cases_c
     # Cas où il y a au moins un bloc dans la séquence
     if l >= 1:
         # Cas 2a : la séquence dépasse le nombre de colonnes j, toujous faux
-        if j < sequence[l-1]:
+        if j < sequence[l-1] - 1:
             memo[j,l] = False
             return False
         
         # Cas 2b : il ne reste qu'une seule case disponible sur la ligne, voir si tous les cases sont bien noires
-        if j == sequence[l-1]:
+        if j == sequence[l-1] - 1 :
             if(l==1) :
                 memo[j,l] = check_bloc(0, j, NOIR, cases_colorees) 
                 return memo[j,l]
@@ -112,11 +112,8 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: np.array, cases_c
                 if possible:
                     memo[j,l] = possible
                     return memo[j,l]
-                else :      
-                    dernier_bloc =  j-sequence[l-1]                                                         # cas 2
-                    if check_bloc(dernier_bloc, j, NOIR, cases_colorees) :         # cas 2.a)
-                        if cases_colorees[dernier_bloc - 1] == BLANC :             # cas 2.b)
-                                memo[j,l] = est_coloriable_rec_2(dernier_bloc-1, l-1, sequence, memo, cases_colorees)
-            else :
-                memo[j,l] = False
+                else :                                                            # cas 2
+                    if check_bloc(j-sequence[l-1]+1, j, NOIR, cases_colorees) :         # cas 2.a)
+                        if cases_colorees[j - sequence[l-1]] == BLANC :             # cas 2.b)
+                                memo[j,l] = est_coloriable_rec_2(j - sequence[l-1]-1, l-1, sequence, memo, cases_colorees)
         return memo[j,l]
