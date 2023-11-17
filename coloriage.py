@@ -95,7 +95,7 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: np.array, cases_c
         # Cas 2b : 
         if j == sequence[l-1] - 1 :
             if(l==1) :
-                memo[j,l] = check_bloc(0, j, NOIR, cases_colorees) 
+                memo[j,l] = (check_bloc(0, j, NOIR, cases_colorees) or check_bloc(0, j, VIDE, cases_colorees))
                 return memo[j,l]
         
         # Cas 2c : relation de récurrence
