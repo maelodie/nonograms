@@ -61,11 +61,10 @@ cases_colorees = [NOIR, NOIR, BLANC, VIDE]
 memo = creer_memo(M, M,VIDE)
 assert est_coloriable_rec_2(M-1, 1, seq_4, memo, cases_colorees) == True
 
-seq_4 = [2, 1]
+seq_5 = [2, 1]
 cases_colorees = [VIDE, VIDE, BLANC, NOIR]
 memo = creer_memo(M, M,VIDE)
-assert est_coloriable_rec_2(M-1, 2, seq_4, memo, cases_colorees) == True
-
+assert est_coloriable_rec_2(M-1, 1, seq_5, memo, cases_colorees) == True
 
 print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 ##################
