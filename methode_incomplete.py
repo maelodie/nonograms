@@ -124,113 +124,117 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
                     memo[j][l] = False
                     return False
 
-def colore_ligne(A: list(list()), i: int,):
+def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list()):
     """
     Colorie par récurrence un max de cases de la ligne i de A
     A : La grille dans son état actuelle. A = grille, sequences_lignes, sequences_colonnes
     i : la ligne a colorié
     index : index de la case avec laquelle on commence
+    cases_colorees : liste des indices des cases qu'on colorie
     """
+    original = copy.deepcopy(A)
     ligne = copy.deepcopy(A[0][i])
-    sequence = copy.deepcopy(A[1][i])
-    j = len(ligne) - 1    # nb_colonnes de la ligne a coloriée
+    sequence = A[1][i]
+    j = len(ligne) - 1 # nb_colonnes de la ligne a coloriée
     l = len(sequence)     # nombre de blocs dans la séquence da la ligne i
-    cases_colorees = []    # liste des indices des cases colorees    
-      
-    for index in range(j+1):
-        # La case ne doit pas être encore coloriée
-        if ligne[index] == VIDE :
-            # Tester si elle peut être coloriée en blanc (la colorier en blanc, et tester si la ligne i a une réponse positive) :
-            ligne[index] = BLANC
-            memo =  creer_tab(j+1,l+1,VIDE)
-            reponse_b  = est_coloriable_rec_2(j, l, sequence, memo, ligne)
-
-            # Tester de même si elle peut être coloriée en noir :
-            ligne[index] = NOIR
-            memo =  creer_tab(j+1,l+1,VIDE)
-            reponse_n  = est_coloriable_rec_2(j, l, sequence, memo, ligne)
-
-            if reponse_b and not(reponse_n) :   # le test blanc réussit mais le test noir échoue
-                ligne[index] = BLANC
-                A[0][i][index] =  BLANC
-                cases_colorees.append(index)      # mis a jour des indices des cases colorées
-            
-            if reponse_n and not(reponse_b) :   # le test noir réussit mais le test blanc échoue
-                ligne[index] = NOIR
-                A[0][i][index] =  NOIR
-                cases_colorees.append(index)
- 
-            if reponse_b and reponse_n :        # les 2 tests reussissent, on peut rien déduire sur cette case
-                ligne[index] = VIDE
-                A[0][i][index] = VIDE
-
-            if not(reponse_b) and not(reponse_n):   # les 2 tests echouent
-                print("Le puzzle n'a pas de solution")
-                return False,A,[]
-
-    return True,A,cases_colorees
-
-
-def colore_colonne(A: list(list()), index: int):
-    """
-        Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
-    """
-    n = len(A)
-    m = len(A[0])
-    l = len(s)
-    colonne_a_colorier = [colonne[j] for colonne in A]
-    new_colors = []
-
-    for i in range(n):
-        if A[i][j] == VIDE:  
-            #tester si elle peut être coloriée en blanc
-            colonne_a_colorier[i][j] = BLANC
-            coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
-
-            #tester si elle peut être coloriée en noir
-            colonne_a_colorier[i][j] = NOIR
-            coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
-
-            #déductions:
-            if not coloriable_blanc and coloriable_noir:
-                A[i][j] = NOIR
-                new_colors.append(i)
-            if not (coloriable_blanc and coloriable_noir):
-                return False, empty_grille(n, m), []
-            
-    return True, A, new_colors
-
-
-def coloration(A: list(list())):
-    n = len(A)
-    m = len(A[0])
-    A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
-    lignes_a_voir = [i for i in range(n)]
-    colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
-
-    while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
-        for i in lignes_a_voir:
-            possibility, A_prime, new_colonnes = colore_ligne(A_prime, i)
-            if not possibility:
-                return False, empty_grille(n, m)
-            colonnes_a_voir = colonnes_a_voir + new_colonnes
-            lignes_a_voir.remove(i)
-
-        for j in colonnes_a_voir:
-            possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
-            if not possibility:
-                return False, empty_grille(n, m)
-            lignes_a_voir = lignes_a_voir + new_lignes
-            colonnes_a_voir.remove(j)
     
-    for i in range(n):
-        for j in range(m):
-            if A_prime[i][j] == VIDE:
-                return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
+    # Cas de base : # il ne reste  aucune case vide a coloré
+    if  index == j + 1 :
+        return True, A, cases_colorees
 
-    return True, A_prime
+    # La case ne doit pas être encore coloriée
+    if ligne[index] == VIDE :
+        # Tester si elle peut être coloriée en blanc (la colorier en blanc, et tester si la ligne i a une réponse positive) :
+        ligne[index] = BLANC
+        memo =  creer_tab(j+1,j+1,VIDE)
+        reponse_b  = est_coloriable_rec_2(j, l, sequence, memo, ligne)
+
+        # Tester de même si elle peut être coloriée en noir :
+        ligne[index] = NOIR
+        memo =  creer_tab(j+1,j+1,VIDE)
+        reponse_n  = est_coloriable_rec_2(j, len(sequence), sequence, memo, ligne)
+
+        if reponse_b and not(reponse_n) :   # le test blanc réussit mais le test noir échoue
+            A[0][i][index] =  BLANC
+            cases_colorees.append(index)      # mis a jour des indices des cases colorées
+            
+        if reponse_n and not(reponse_b) :   # le test noir réussit mais le test blanc échoue
+            A[0][i][index] =  NOIR
+            cases_colorees.append(index)
+
+        if reponse_b and reponse_n :        # les 2 tests reussissent, on peut rien déduire sur cette case
+            A[0][i][index] =  VIDE
+
+        if not(reponse_b) and not(reponse_n):   # les 2 tests echouent
+            print("Le puzzle n'a pas de solution")
+            return False,original,[]
+        
+        return colore_ligne_rec(A,i, index + 1, cases_colorees)
+          
+    # Cas ou la case est deja colorée
+    else :
+        colore_ligne_rec(A,i,index+1)
+
+# def colore_colonne(A: list(list()), index: int):
+#     """
+#         Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+#     """
+#     n = len(A)
+#     m = len(A[0])
+#     l = len(s)
+#     colonne_a_colorier = [colonne[j] for colonne in A]
+#     new_colors = []
+
+#     for i in range(n):
+#         if A[i][j] == VIDE:  
+#             #tester si elle peut être coloriée en blanc
+#             colonne_a_colorier[i][j] = BLANC
+#             coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+
+#             #tester si elle peut être coloriée en noir
+#             colonne_a_colorier[i][j] = NOIR
+#             coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+
+#             #déductions:
+#             if not coloriable_blanc and coloriable_noir:
+#                 A[i][j] = NOIR
+#                 new_colors.append(i)
+#             if not (coloriable_blanc and coloriable_noir):
+#                 return False, empty_grille(n, m), []
+            
+#     return True, A, new_colors
 
 
-def propagate(instance):
-    return None
+# def coloration(A: list(list())):
+#     n = len(A)
+#     m = len(A[0])
+#     A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
+#     lignes_a_voir = [i for i in range(n)]
+#     colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
+
+#     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
+#         for i in lignes_a_voir:
+#             possibility, A_prime, new_colonnes = colore_ligne(A_prime, i)
+#             if not possibility:
+#                 return False, empty_grille(n, m)
+#             colonnes_a_voir = colonnes_a_voir + new_colonnes
+#             lignes_a_voir.remove(i)
+
+#         for j in colonnes_a_voir:
+#             possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
+#             if not possibility:
+#                 return False, empty_grille(n, m)
+#             lignes_a_voir = lignes_a_voir + new_lignes
+#             colonnes_a_voir.remove(j)
+    
+#     for i in range(n):
+#         for j in range(m):
+#             if A_prime[i][j] == VIDE:
+#                 return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
+
+#     return True, A_prime
+
+
+# def propagate(instance):
+#     return None
 
