@@ -66,6 +66,12 @@ cases_colorees = [VIDE, VIDE, BLANC, NOIR]
 memo = creer_tab(M, M,VIDE)
 assert est_coloriable_rec_2(M-1, 2, seq_5, memo, cases_colorees) == True
 
+seq_6 = [3]
+cases_colorees = [BLANC, VIDE, VIDE, VIDE, VIDE]
+memo = creer_tab(5, 5,VIDE)
+assert est_coloriable_rec_2(4, 1, seq_6, memo, cases_colorees) == True
+
+
 print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 ##################
 
@@ -75,10 +81,20 @@ print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 # Lecture d'une instance
 fichier_instance = "instances//instances//0.txt"
 A = lire_instance(fichier_instance)
+cases_colorees =  []
+# memoisation = creer_tab(10, 10, VIDE)
 
-# Affichage des résultats
+# # Affichage des résultats
 print("Sequences pour les lignes :", A[1])
 print("Sequences pour les colonnes :", A[2])
 
-matrice, b, liste = colore_ligne(A, 0, 0)
-##################
+# print("La matrice initiale est : \n")
+# afficher_grille(A[0])
+# print("Nombre de lignes dans la grille : ", len(A[1]))
+# print("Nombre de colonnes dans la grille : ", len(A[2]))
+
+b, matrice, liste = colore_ligne(A, 1)
+afficher_grille(matrice[0])
+# print("Coloriage possible : ", b)
+# print("indices des cases colorees : ", liste)
+#################
