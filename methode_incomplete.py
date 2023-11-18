@@ -120,13 +120,54 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: np.array, cases_c
                     memo[j][l] = False
                     return False
 
-def colore_ligne(A: list(list()), index: int):
+                    return False
+
+def colore_ligne(A: list(list()), i: int, index):
     """
-        Détermine si la ligne d'indice index est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+    Colorie par récurrence un max de cases de la ligne i de A
+    A : La grille dans son état actuelle. A = grille, sequences_lignes, sequences_colonnes
+    i : la ligne a colorié
+    index : index de la case avec laquelle on commence
     """
-    new_A = A
-    new_colonnes = []
-    return False, new_A , new_colonnes
+    ligne = copy.deepcopy(A[0][i])
+    sequence = A[1][i]
+    j = len(ligne[i]) - 1 # nb_colonnes de la ligne a coloriée
+    l = len(sequence)     # nombre de blocs dans la séquence da la ligne i
+    cases_colorees = []   # liste des indices des cases colorées de la ligne i
+    memoisation = creer_tab(j,l, VIDE)
+
+    if memoisation[j][l] != VIDE :
+        return memo[j][l]
+    
+    # Cas de base :
+
+    # La case ne doit pas être encore coloriée
+    if ligne[index] == VIDE :
+        # Tester si elle peut être coloriée en blanc (la colorier en blanc, et tester si la ligne i a une réponse positive) :
+        ligne[index] = BLANC
+        memo =  creer_tab(j,l,VIDE)
+        reponse_b  = est_coloriable_rec_2(j, l, sequence, memo, ligne)
+
+        # Tester de même si elle peut être coloriée en noir :
+        ligne[index] = NOIR
+        memo =  creer_tab(j,l,VIDE)
+        reponse_n  = est_coloriable_rec_2(j, len(sequence), sequence, memo, ligne)
+
+        if reponse_b and not(reponse_n) :   # le test blanc réussit mais le test noir échoue
+            A[0][i][index] =  BLANC
+            cases_colorees.append(index)      # mis a jour des indices des cases colorées
+            memoisation[j][l] = colore_ligne(A,i,index+1)
+            
+        if reponse_n and not(reponse_b) :   # le test noir réussit mais le test blanc échoue
+            A[0][i][index] =  NOIR
+            cases_colorees.append(index)
+            memoisation[j][l] = colore_ligne(A,i,index+1)
+
+        else :
+            return False,A,[]
+
+        return True,A,cases_colorees
+
 
 def colore_colonne(A: list(list()), index: int):
     """
