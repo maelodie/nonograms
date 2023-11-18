@@ -20,10 +20,6 @@ def creer_tab(n, m, etat) :
     """
     return [[etat for _ in range(m)] for _ in range(n)]
 
-def afficher_grille(g) :
-    for ligne in g:
-        print(ligne)
-
 def lire_instance(src):
     sequences_lignes = []
     sequences_colonnes = []

@@ -46,7 +46,7 @@ def est_coloriable_rec(j: int, l: int, sequence: list, memo: list):
     
 def check_bloc(i,j,etat,cases_colorees):
     """
-    Verifie si les cases entre les colonnes i et j sont du même etat .
+    Verifie s'il n'existe aucune case etat entre les colonnes i et j  .
     Parameters
     ----------
     - i : Numéro de colonne de début
@@ -56,9 +56,9 @@ def check_bloc(i,j,etat,cases_colorees):
 
     Returns
     -------
-    - True s'il existe au moins une case etat entre les colonnes i et j, False sinon.
+    - True s'il n'existe aucune case etat entre les colonnes i et j, False sinon.
     """
-    return all(cases_colorees[k] == etat for k in range(i,j+1))
+    return etat not in cases_colorees[i:j+1]
 
 def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_colorees : list):
     """
@@ -82,7 +82,7 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
     
     # Cas de base : la séquence est vide, donc la ligne ne doit pas contenir case noire
     if l == 0:
-        memo[j][l] = (check_bloc(0, j, BLANC, cases_colorees) or check_bloc(0,j,VIDE,cases_colorees))
+        memo[j][l] = check_bloc(0, j, NOIR, cases_colorees) 
         return memo[j][l]
     
     # Cas où il y a au moins un bloc dans la séquence
@@ -95,7 +95,7 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
         # Cas 2b : 
         if j == sequence[l-1] - 1 :
             if(l==1) :
-                memo[j][l] = (check_bloc(0, j, NOIR, cases_colorees) or check_bloc(0, j, VIDE, cases_colorees))
+                memo[j][l] = check_bloc(0, j, BLANC, cases_colorees)
                 return memo[j][l]
         
         # Cas 2c : relation de récurrence
@@ -107,17 +107,16 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
             # b) il faut verifier qu'au moins la case avant le début de dernier bloque est blanche donc la case j - s[l-1] -1
             # c) si c'est bon, verifier que la sequence est coloriable sur les colonnes entre 0 et j - s[l-1] -1
         else:
+            possible = False
             if cases_colorees[j] == BLANC or cases_colorees[j] == VIDE:                   # cas 1
                 possible = est_coloriable_rec_2(j-1, l, sequence, memo, cases_colorees)
-            else :
-                possible = False
-
+           
             if possible :
                 memo[j][l] = possible
                 return memo[j][l]
             else :                                                                                                                            # cas 2 la case j est noire
-                if check_bloc(j-sequence[l-1]+1, j, NOIR, cases_colorees) or check_bloc(j-sequence[l-1]+1, j, VIDE, cases_colorees) :         # cas 2.a)
-                    if cases_colorees[j - sequence[l-1]] == BLANC or cases_colorees[j - sequence[l-1]] == VIDE:                               # cas 2.b)
+                if check_bloc(j-sequence[l-1]+1, j, BLANC, cases_colorees) :                                                                  # cas 2.a)
+                    if cases_colorees[j - sequence[l-1]] == BLANC or cases_colorees[j - sequence[l-1]] == VIDE :                               # cas 2.b)
                             possible = est_coloriable_rec_2(j - sequence[l-1]-1, l-1, sequence, memo, cases_colorees)
                             memo[j][l] = possible
                             return memo[j][l]
