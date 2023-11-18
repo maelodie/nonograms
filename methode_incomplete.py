@@ -1,4 +1,4 @@
-import numpy as np
+import copy
 from config import *
 
 def est_coloriable_rec(j: int, l: int, sequence: list, memo: np.array):
@@ -125,15 +125,44 @@ def colore_ligne(A: list(list()), index: int):
         Détermine si la ligne d'indice index est coloriable et renvoie la grille augmentée de ce nouveau coloriage
     """
     new_A = A
+    new_colonnes = []
+    return False, new_A , new_colonnes
 
-    return False, new_A 
+def colore_colonne(A: list(list()), index: int):
+    """
+        Détermine si la colonne d'indice index est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+    """
+    new_A = A
+    new_lignes = []
+    return False, new_A , new_lignes
+
+
 def coloration(A: list(list())):
-    A_prime = A.copy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
-    ligne_a_voir = [0 for i in range(len(A))]
-    colonnes_a_voir = [0 for i in range(len(A[0]))]#en supposant que les lignes ont toutes le même nombre de colonnes
+    n = len(A)
+    m = len(A[0])
+    A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
+    lignes_a_voir = [i for i in range(n)]
+    colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
 
-    while len(ligne_a_voir) != 0 and len(colonnes_a_voir) != 0:
-        for i in ligne_a_voir:
-            possibility, A_prime = colore_ligne(A_prime, i)
+    while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
+        for i in lignes_a_voir:
+            possibility, A_prime, new_colonnes = colore_ligne(A_prime, i)
             if not possibility:
-                return False, empty_grille()
+                return False, empty_grille(n, m)
+            colonnes_a_voir = colonnes_a_voir + new_colonnes
+            lignes_a_voir.remove(i)
+
+        for j in colonnes_a_voir:
+            possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
+            if not possibility:
+                return False, empty_grille(n, m)
+            lignes_a_voir = lignes_a_voir + new_lignes
+            colonnes_a_voir.remove(j)
+    
+    for i in range(n):
+        for j in range(m):
+            if A_prime[i][j] == VIDE:
+                return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
+
+    return True, A_prime
+
