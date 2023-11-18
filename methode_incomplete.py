@@ -172,62 +172,66 @@ def colore_ligne(A: list(list()), i: int,):
     return True,A,cases_colorees
 
 
-# def colore_colonne(A: list(list()), index: int):
-#     """
-#         Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
-#     """
-#     n = len(A)
-#     m = len(A[0])
-#     l = len(s)
-#     colonne_a_colorier = [colonne[j] for colonne in A]
-#     new_colors = []
+def colore_colonne(A: list(list()), index: int):
+    """
+        Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+    """
+    n = len(A)
+    m = len(A[0])
+    l = len(s)
+    colonne_a_colorier = [colonne[j] for colonne in A]
+    new_colors = []
 
-#     for i in range(n):
-#         if A[i][j] == VIDE:  
-#             #tester si elle peut être coloriée en blanc
-#             colonne_a_colorier[i][j] = BLANC
-#             coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+    for i in range(n):
+        if A[i][j] == VIDE:  
+            #tester si elle peut être coloriée en blanc
+            colonne_a_colorier[i][j] = BLANC
+            coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
 
-#             #tester si elle peut être coloriée en noir
-#             colonne_a_colorier[i][j] = NOIR
-#             coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+            #tester si elle peut être coloriée en noir
+            colonne_a_colorier[i][j] = NOIR
+            coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
 
-#             #déductions:
-#             if not coloriable_blanc and coloriable_noir:
-#                 A[i][j] = NOIR
-#                 new_colors.append(i)
-#             if not (coloriable_blanc and coloriable_noir):
-#                 return False, empty_grille(n, m), []
+            #déductions:
+            if not coloriable_blanc and coloriable_noir:
+                A[i][j] = NOIR
+                new_colors.append(i)
+            if not (coloriable_blanc and coloriable_noir):
+                return False, empty_grille(n, m), []
             
-#     return True, A, new_colors
+    return True, A, new_colors
 
 
-# def coloration(A: list(list())):
-#     n = len(A)
-#     m = len(A[0])
-#     A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
-#     lignes_a_voir = [i for i in range(n)]
-#     colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
+def coloration(A: list(list())):
+    n = len(A)
+    m = len(A[0])
+    A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
+    lignes_a_voir = [i for i in range(n)]
+    colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
 
-#     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
-#         for i in lignes_a_voir:
-#             possibility, A_prime, new_colonnes = colore_ligne(A_prime, i)
-#             if not possibility:
-#                 return False, empty_grille(n, m)
-#             colonnes_a_voir = colonnes_a_voir + new_colonnes
-#             lignes_a_voir.remove(i)
+    while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
+        for i in lignes_a_voir:
+            possibility, A_prime, new_colonnes = colore_ligne(A_prime, i)
+            if not possibility:
+                return False, empty_grille(n, m)
+            colonnes_a_voir = colonnes_a_voir + new_colonnes
+            lignes_a_voir.remove(i)
 
-#         for j in colonnes_a_voir:
-#             possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
-#             if not possibility:
-#                 return False, empty_grille(n, m)
-#             lignes_a_voir = lignes_a_voir + new_lignes
-#             colonnes_a_voir.remove(j)
+        for j in colonnes_a_voir:
+            possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
+            if not possibility:
+                return False, empty_grille(n, m)
+            lignes_a_voir = lignes_a_voir + new_lignes
+            colonnes_a_voir.remove(j)
     
-#     for i in range(n):
-#         for j in range(m):
-#             if A_prime[i][j] == VIDE:
-#                 return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
+    for i in range(n):
+        for j in range(m):
+            if A_prime[i][j] == VIDE:
+                return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
 
-#     return True, A_prime
+    return True, A_prime
+
+
+def propagate(instance):
+    return None
 

@@ -79,7 +79,7 @@ print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 # Test cases for colore_ligne
 ##################
 # Lecture d'une instance
-fichier_instance = "instances//instances//0.txt"
+fichier_instance = "instances/0.txt"
 A = lire_instance(fichier_instance)
 cases_colorees =  []
 # memoisation = creer_tab(10, 10, VIDE)
@@ -88,13 +88,5 @@ cases_colorees =  []
 print("Sequences pour les lignes :", A[1])
 print("Sequences pour les colonnes :", A[2])
 
-# print("La matrice initiale est : \n")
-# afficher_grille(A[0])
-# print("Nombre de lignes dans la grille : ", len(A[1]))
-# print("Nombre de colonnes dans la grille : ", len(A[2]))
+matrice, b, liste = colore_ligne(A, 0, 0)
 
-b, matrice, liste = colore_ligne(A, 1)
-afficher_grille(matrice[0])
-# print("Coloriage possible : ", b)
-# print("indices des cases colorees : ", liste)
-#################
