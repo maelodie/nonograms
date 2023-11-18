@@ -1,8 +1,10 @@
+import time
+from methode_incomplete import propagate
+
 BLANC = 1
 VIDE = 0
 NOIR = -1
 
-import numpy as np
 def creer_tab(n, m, etat) :
     """
     Créer une matrice pour la mémoisastion
@@ -50,9 +52,24 @@ def empty_grille(n: int, m: int):
 
 
 # # Exemple d'utilisation
-# fichier_instance = "instances//instances//0.txt"
+# fichier_instance = "instances/0.txt"
 # _, sequences_lignes, sequences_colonnes = lire_instance(fichier_instance)
 
 # # Affichage des résultats
 # print("Sequences pour les lignes :", sequences_lignes)
 # print("Sequences pour les colonnes :", sequences_colonnes)
+
+def time_resolution(instance):
+    debut = time.time
+    propagate(instance)
+    fin = time.time
+    return fin - debut
+
+def tab_times(list_instance):
+    total_temps = 0
+    tab_temps = []
+    for instance in list_instance:
+        t = time_resolution(instance)
+        tab_temps.append([instance, t])
+        total_temps += t
+    return tab_temps

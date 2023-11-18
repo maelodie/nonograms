@@ -73,7 +73,7 @@ print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 # Test cases for colore_ligne
 ##################
 # Lecture d'une instance
-fichier_instance = "instances//instances//0.txt"
+fichier_instance = "instances/0.txt"
 A = lire_instance(fichier_instance)
 
 # Affichage des résultats
