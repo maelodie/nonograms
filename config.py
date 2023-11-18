@@ -17,7 +17,7 @@ def creer_tab(n, m, etat) :
     -------
     Une matrice nxm initialisé a v
     """
-    return np.full((n,m), etat)
+    return [[etat for _ in range(m)] for _ in range(n)]
 
 def lire_instance(src):
     sequences_lignes = []
@@ -41,6 +41,13 @@ def lire_instance(src):
 
     grille = creer_tab(len(sequences_lignes), len(sequences_colonnes), VIDE)
     return grille, sequences_lignes, sequences_colonnes
+
+def empty_grille(n: int, m: int):
+    """
+        Cette fonction renvoie une grille vide de taille n x m
+    """
+    return [[VIDE for _ in range(m)] for _ in range(n)]
+
 
 # # Exemple d'utilisation
 # fichier_instance = "instances//instances//0.txt"
