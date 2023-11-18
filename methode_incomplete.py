@@ -139,7 +139,10 @@ def colore_ligne(A: list(list()), i: int, index):
     if memoisation[j][l] != VIDE :
         return memo[j][l]
     
-    # Cas de base :
+    # Cas de base : # il ne reste  aucune case vide a coloré
+    if not(check_bloc(index, j, VIDE)) :
+        possible = est_coloriable_rec_2(j, l, sequence, memo, ligne)
+        return possible, A, cases_colorees
 
     # La case ne doit pas être encore coloriée
     if ligne[index] == VIDE :
@@ -163,10 +166,21 @@ def colore_ligne(A: list(list()), i: int, index):
             cases_colorees.append(index)
             memoisation[j][l] = colore_ligne(A,i,index+1)
 
-        else :
+        if reponse_b and reponse_n :        # les 2 tests reussissent, on peut rien déduire sur cette case
+            A[0][i][index] =  VIDE
+            cases_colorees.append(index)
+            memoisation[j][l] = colore_ligne(A,i,index+1)
+
+
+        if not(reponse_b) and not(reponse_n):   # les 2 tests echouent
+            print("Le puzzle n'a pas de solution")
             return False,A,[]
 
         return True,A,cases_colorees
+    
+    # Cas ou la case est deja colorée
+    else :
+        colore_ligne(A,i,index+1)
 
 
 def colore_colonne(A: list(list()), index: int):
