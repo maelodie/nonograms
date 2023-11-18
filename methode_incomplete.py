@@ -1,7 +1,7 @@
 import copy
 from config import *
 
-def est_coloriable_rec(j: int, l: int, sequence: list, memo: np.array):
+def est_coloriable_rec(j: int, l: int, sequence: list, memo: list):
     """
     Vérifie récursivement si une séquence peut être coloriée jusqu'à la colonne j dans la ligne l, avec mémoisation .
 
@@ -60,7 +60,7 @@ def check_bloc(i,j,etat,cases_colorees):
     """
     return all(cases_colorees[k] == etat for k in range(i,j+1))
 
-def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: np.array, cases_colorees : list):
+def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_colorees : list):
     """
     Vérifie récursivement si une séquence peut être coloriée jusqu'à la colonne j dans la ligne l, avec mémoisation.
     Avec certaines cases déja coloriées en blanc ou en noir.
@@ -185,11 +185,32 @@ def colore_ligne(A: list(list()), i: int, index):
 
 def colore_colonne(A: list(list()), index: int):
     """
-        Détermine si la colonne d'indice index est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+        Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
     """
-    new_A = A
-    new_lignes = []
-    return False, new_A , new_lignes
+    n = len(A)
+    m = len(A[0])
+    l = len(s)
+    colonne_a_colorier = [colonne[j] for colonne in A]
+    new_colors = []
+
+    for i in range(n):
+        if A[i][j] == VIDE:  
+            #tester si elle peut être coloriée en blanc
+            colonne_a_colorier[i][j] = BLANC
+            coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+
+            #tester si elle peut être coloriée en noir
+            colonne_a_colorier[i][j] = NOIR
+            coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+
+            #déductions:
+            if not coloriable_blanc and coloriable_noir:
+                A[i][j] = NOIR
+                new_colors.append(i)
+            if not (coloriable_blanc and coloriable_noir):
+                return False, empty_grille(n, m), []
+            
+    return True, A, new_colors
 
 
 def coloration(A: list(list())):
