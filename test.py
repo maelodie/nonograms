@@ -1,4 +1,4 @@
-from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2
+from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2, colore_ligne
 from config import *
 
 ##################
@@ -67,4 +67,18 @@ memo = creer_tab(M, M,VIDE)
 assert est_coloriable_rec_2(M-1, 2, seq_5, memo, cases_colorees) == True
 
 print("Tous les testes sont passés pour est_coloriable_rec_2 !")
+##################
+
+##################
+# Test cases for colore_ligne
+##################
+# Lecture d'une instance
+fichier_instance = "instances//instances//0.txt"
+A = lire_instance(fichier_instance)
+
+# Affichage des résultats
+print("Sequences pour les lignes :", A[1])
+print("Sequences pour les colonnes :", A[2])
+
+matrice, b, liste = colore_ligne(A, 0, 0)
 ##################
