@@ -1,5 +1,4 @@
 import time
-from methode_incomplete import propagate
 
 BLANC = 1
 VIDE = 0
@@ -59,9 +58,9 @@ def empty_grille(n: int, m: int):
 # print("Sequences pour les lignes :", sequences_lignes)
 # print("Sequences pour les colonnes :", sequences_colonnes)
 
-def time_resolution(instance):
+def time_resolution(instance, function):
     debut = time.time
-    propagate(instance)
+    function(instance)
     fin = time.time
     return fin - debut
 

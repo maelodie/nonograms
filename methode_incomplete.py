@@ -239,3 +239,7 @@ def colore_ligne(A: list(list()), i: int, index):
 
 #     return True, A_prime
 
+
+def propagate(instance):
+    return None
+
