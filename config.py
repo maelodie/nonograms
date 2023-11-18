@@ -72,3 +72,15 @@ def tab_times(list_instance):
         tab_temps.append([instance, t])
         total_temps += t
     return tab_temps
+
+def affichage(grille):
+    for i in range(len(grille)):
+        for j in range(len(grille[0])):
+            if grille[i][j] == VIDE:
+                print(" ", end = ' ')
+            if grille[i][j] == BLANC:
+                print("⬜", end = ' ')
+            if grille[i][j] == NOIR:
+                print("⬛", end = ' ')
+        print()
+    print()
