@@ -1,4 +1,4 @@
-from coloriage import est_coloriable_rec, est_coloriable_rec_2
+from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2
 from config import *
 
 ##################
