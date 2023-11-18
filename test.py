@@ -1,4 +1,4 @@
-from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2
+from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2, coloration
 from config import *
 
 ##################
@@ -80,7 +80,10 @@ print("Tous les testes sont passés pour est_coloriable_rec_2 !")
 ##################
 
 ##################
-# Test cases for colore_ligne
+# Test cases for coloration
 ##################
 ##################
+
+A = lire_instance("instances/3.txt")
+affichage(coloration(A)[1][0])
 

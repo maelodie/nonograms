@@ -124,7 +124,7 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
                     memo[j][l] = False
                     return False
 
-def colore_ligne(A: list(list()), i: int,):
+def colore_ligne(A: list(list()), i: int):
     """
     Colorie par récurrence un max de cases de la ligne i de A
     A : La grille dans son état actuelle. A = grille, sequences_lignes, sequences_colonnes
@@ -170,43 +170,60 @@ def colore_ligne(A: list(list()), i: int,):
 
     return True,A,cases_colorees
 
-
-def colore_colonne(A: list(list()), index: int):
+def colore_colonne(A: list(list()), j : int):
     """
-        Détermine si la colonne d'indice j est coloriable et renvoie la grille augmentée de ce nouveau coloriage
+        A : grille dans son état actuel. A = grille, sequences_lignes, sequencees_colonne
+        j : indice de la colonne a colorier
     """
-    n = len(A)
-    m = len(A[0])
-    l = len(s)
-    colonne_a_colorier = [colonne[j] for colonne in A]
-    new_colors = []
+    colonne = [colonne[j] for colonne in A[0]]
+    sequence = A[2][j]
+    l = len(sequence)
+    i = len(colonne) #indice à partir duquel on commence à colorier la ligne
+    cases_colorees = []
 
-    for i in range(n):
-        if A[i][j] == VIDE:  
-            #tester si elle peut être coloriée en blanc
-            colonne_a_colorier[i][j] = BLANC
-            coloriable_blanc = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+    for index in range(i):
+        if colonne[index] == VIDE:
+            #Test si elle peut être coloriée en blanc
+            colonne[index] = BLANC
+            memo = empty_grille(i, l+1)
+            reponse_b = est_coloriable_rec_2(i - 1, l, sequence, memo, colonne)
 
-            #tester si elle peut être coloriée en noir
-            colonne_a_colorier[i][j] = NOIR
-            coloriable_noir = est_coloriable_rec_2(j, l, s, colonne_a_colorier)
+            #Test si elle peut être coloriée en noir
+            colonne[index] = NOIR
+            memo = empty_grille(i, l+1)
+            reponse_n = est_coloriable_rec_2(i - 1 , l, sequence, memo, colonne)
 
-            #déductions:
-            if not coloriable_blanc and coloriable_noir:
-                A[i][j] = NOIR
-                new_colors.append(i)
-            if not (coloriable_blanc and coloriable_noir):
-                return False, empty_grille(n, m), []
+            #réussite du test blanc et pas du test noir
+            if reponse_b and not(reponse_n) : 
+                colonne[index] = BLANC
+                A[0][index][j] =  BLANC
+                cases_colorees.append(index)      
             
-    return True, A, new_colors
+            #réussite du test noir et pas du test blanc
+            if reponse_n and not(reponse_b) :   
+                colonne[index] = NOIR
+                A[0][index][j] =  NOIR
+                cases_colorees.append(index)
+
+            #réussite des deux tests
+            if reponse_b and reponse_n :       
+                colonne[index] = VIDE
+                A[0][index][j] = VIDE
+            
+            #echec des deux tests
+            if not(reponse_b) and not(reponse_n):   
+                print("Le puzzle n'a pas de solution")
+                return False,A,[]
+
+    return True, A, cases_colorees
 
 
 def coloration(A: list(list())):
-    n = len(A)
-    m = len(A[0])
     A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
+    n = len(A[0])
+    m = len(A[0][0])
     lignes_a_voir = [i for i in range(n)]
-    colonnes_a_voir = [i for i in range(m)]#en supposant que les lignes ont toutes le même nombre de colonnes
+    colonnes_a_voir = [i for i in range(m)] #en supposant que les lignes ont toutes le même nombre de colonnes
 
     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
@@ -225,11 +242,10 @@ def coloration(A: list(list())):
     
     for i in range(n):
         for j in range(m):
-            if A_prime[i][j] == VIDE:
+            if A_prime[0][i][j] == VIDE:
                 return None, A_prime #parce qu'on ne sait pas : None = on ne sait pas
 
     return True, A_prime
-
 
 def propagate(instance):
     return None
