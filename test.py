@@ -29,7 +29,7 @@ assert est_coloriable_rec(M-1, 3, seq_6, memo) == False
 memo = creer_tab(M, M+1,VIDE)
 assert est_coloriable_rec(M-1, 6, seq_7, memo) == False
 
-print("Tous les testes sont passés pour est_coloriable_rec !")
+print("Tous les tests sont passés pour est_coloriable_rec !")
 ##################
 
 ##################
@@ -76,7 +76,7 @@ cases_colorees = [VIDE, VIDE, NOIR, BLANC]
 memo = creer_tab(M, M,VIDE)
 assert est_coloriable_rec_2(M-1, 1, seq_7, memo, cases_colorees) == True
 
-print("Tous les testes sont passés pour est_coloriable_rec_2 !")
+print("Tous les tests sont passés pour est_coloriable_rec_2 !")
 ##################
 
 ##################
@@ -111,12 +111,12 @@ b, m, cases = colore_ligne_rec(A, 3, index, cases_colorees)
 assert b == True
 assert cases == [2]
 
-print("Tous les testes sont passés pour colore_ligne_rec !")
+print("Tous les tests sont passés pour colore_ligne_rec !")
 #################
 
 ##################
 # Test cases for coloration
 ##################
-A = lire_instance("instances/3.txt")
-affichage(coloration(A)[1][0])
+A = lire_instance("instances/10.txt")
+affichage((coloration(A))[1][0])
 
