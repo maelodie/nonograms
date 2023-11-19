@@ -77,3 +77,13 @@ def affichage(grille):
                 print("⬛", end = '')
         print()
     print()
+
+def timeFormat(listTemps: list):
+    res = []
+    for temps in listTemps:
+        heure = int(temps // 3600)
+        minute = int((temps % 3600) // 60)
+        seconde = temps % 60
+        formatted_time = "{:02f}:{:02f}:{:02f}".format(heure, minute, seconde)
+        res.append(formatted_time)
+    return res

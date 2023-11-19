@@ -182,7 +182,7 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
         memoisation[(tuple(ligne), tuple(cases_colorees))]= colore_ligne_rec(A, i, index+1, cases_colorees, memoisation)
         return memoisation[(tuple(ligne), tuple(cases_colorees))]
 
-def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : list()):
+def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : list(), memoisation):
     """
     Colorie par récurrence un max de cases de la colonne j de A
 
@@ -209,6 +209,9 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
     i = len(colonne) - 1
     l = len(sequence)
 
+    if (tuple(colonne), tuple(cases_colorees)) in memoisation :
+        return memoisation[(tuple(colonne), tuple(cases_colorees))]
+    
     #case de base : on se trouve à la fin de la colonne et il n'y a plus de cases à colorer
     if index == i + 1:
         return True, A, cases_colorees
@@ -244,12 +247,16 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
          #echec des deux tests
         if not(reponse_b) and not(reponse_n):  
             print("Le puzzle n'a pas de solution")
+            memoisation[(tuple(colonne), tuple(cases_colorees))] =  False, original,[]
             return False, original, []
-        return colore_colonne_rec(A, j, index + 1, cases_colorees)
+        
+        memoisation[(tuple(colonne), tuple(cases_colorees))]= colore_colonne_rec(A, j, index + 1, cases_colorees, memoisation)
+        return memoisation[(tuple(colonne), tuple(cases_colorees))] 
+    
     #pour les cases déjà colorées
     else:
-        return colore_colonne_rec(A, j, index + 1, cases_colorees)
-
+        memoisation[(tuple(colonne), tuple(cases_colorees))] = colore_colonne_rec(A, j, index + 1, cases_colorees, memoisation)
+        return memoisation[(tuple(colonne), tuple(cases_colorees))] 
 def coloration(A: list(list())):
     """
     Colorie une grille initialement VIDE, en prenant en compte les séquences des lignes, et celles des colonnes.
@@ -282,7 +289,9 @@ def coloration(A: list(list())):
             lignes_a_voir.remove(i)
         
         for j in colonnes_a_voir:
-            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [])
+            memoisation_colonne = {}
+            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], memoisation_colonne)
+            
             #possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
@@ -307,7 +316,7 @@ def propagation(src) :
     (ok,res) = coloration(A)
 
     if ok :
-        print("Voici la soloution du puzzle : ")
+        print("Voici la solution du puzzle : ")
         affichage(res[0])
     if ok == False :
         print("Le puzzle n'a pas de solution")
