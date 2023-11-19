@@ -4,23 +4,39 @@ BLANC = 1
 VIDE = 0
 NOIR = -1
 
-def creer_tab(n, m, etat) :
+def grille_vide(n: int, m: int):
     """
-    Créer une matrice pour la mémoisastion
+    Créer une matrice nxm initialisée a VIDE
 
     Parameteres
     -----------
     - n : nombre de lignes
     - m : nombre de colonnes
-    - etat : état d'une case (VIDE, BLANC OU NOIR)
+    
+    Returns
+    -------
+    Une matrice nxm initialisé a VIDE
+    """
+    return [[VIDE for _ in range(m)] for _ in range(n)]
+
+def lire_instance(src):
+    """
+    Lecture d'un fichier .txt contenant une instance de sequences de lignes et de colonnes.
+
+    Parameters
+    ----------
+    - src : fichier source de l'instance a lire
 
     Returns
     -------
-    Une matrice nxm initialisé a v
+    (grille, sequences_lignes, sequences_colonnes)
+        - grille : 
+            matrice initialisée a vide de taille nb_lignes x nb_colonnes de l'instance
+        - sequences_lignes :
+            une liste de liste : contient l'ensemble des sequences de chaque ligne sous forme de liste d'entiers
+        - sequences_colonnes :
+            une liste de liste : contient l'ensemble des sequences de chaque colonne sous forme de liste d'entiers
     """
-    return [[etat for _ in range(m)] for _ in range(n)]
-
-def lire_instance(src):
     sequences_lignes = []
     sequences_colonnes = []
 
@@ -40,40 +56,17 @@ def lire_instance(src):
         sequence = list(map(int, ligne.split()))
         sequences_colonnes.append(sequence)
 
-    grille = creer_tab(len(sequences_lignes), len(sequences_colonnes), VIDE)
+    grille = grille_vide(len(sequences_lignes), len(sequences_colonnes))
     return grille, sequences_lignes, sequences_colonnes
 
-def empty_grille(n: int, m: int):
-    """
-        Cette fonction renvoie une grille vide de taille n x m
-    """
-    return [[VIDE for _ in range(m)] for _ in range(n)]
-
-
-# # Exemple d'utilisation
-# fichier_instance = "instances/0.txt"
-# _, sequences_lignes, sequences_colonnes = lire_instance(fichier_instance)
-
-# # Affichage des résultats
-# print("Sequences pour les lignes :", sequences_lignes)
-# print("Sequences pour les colonnes :", sequences_colonnes)
-
-def time_resolution(instance, function):
-    debut = time.time
-    function(instance)
-    fin = time.time
-    return fin - debut
-
-def tab_times(list_instance):
-    total_temps = 0
-    tab_temps = []
-    for instance in list_instance:
-        t = time_resolution(instance)
-        tab_temps.append([instance, t])
-        total_temps += t
-    return tab_temps
-
 def affichage(grille):
+    """
+    Affiche une représentation visuelle d'une grille.
+
+    Parameters 
+    ----------
+    grille : grille a 2 dimensions a représenté
+    """
     for i in range(len(grille)):
         for j in range(len(grille[0])):
             if grille[i][j] == VIDE:
