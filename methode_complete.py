@@ -61,6 +61,14 @@ def prochaine_case_indeterminee(grille, k):
         if grille[ligne][colonne] == VIDE:
             return i
     
+
+def trouvek(A,i,j,M,N):
+    for i2 in range(i,N):
+        for j2 in range(j,M):
+            if (A[0][i2][j2] == VIDE):
+                return M*i2+j2
+    return M*N
+
 def enum_rec(A : list(list()), k : int, c) :
     """
     Enumere les coloriages potentiels de la grille A si la case k est de couleur c.
@@ -92,7 +100,8 @@ def enum_rec(A : list(list()), k : int, c) :
     if possible == False:
         return False, (grille_vide(n,m), None, None)
   
-    k_prime = prochaine_case_indeterminee(A_prime[0], k)
+    k_prime = trouvek(A_prime, i, j, m , n)
+    print(k_prime)
     return enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR)
 
 def enumeration(A : list(list())) :

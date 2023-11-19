@@ -108,7 +108,7 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
                     memo[j][l] = False
                     return False
 
-def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list()):
+def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list(), memoisation):
     """
     Colorie par récurrence un max de cases de la ligne i de A
 
@@ -135,9 +135,14 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
     j = len(ligne) - 1    # nb_colonnes de la ligne a coloriée
     l = len(sequence)     # nombre de blocs dans la séquence da la ligne i
 
+    if (tuple(ligne), tuple(cases_colorees)) in memoisation :
+        return memoisation[(tuple(ligne), tuple(cases_colorees))]# On connaît déja la valeur grâce a la mémoisation
+
     # Cas de base : # il ne reste  aucune case vide a coloré
     if  index == j + 1 :
+        memoisation[(tuple(ligne), tuple(cases_colorees))] = True, A, cases_colorees
         return True, A, cases_colorees
+    
     # La case ne doit pas être encore coloriée
     if ligne[index] == VIDE :
         # Tester si elle peut être coloriée en blanc (la colorier en blanc, et tester si la ligne i a une réponse positive) :
@@ -151,24 +156,31 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
         reponse_n  = est_coloriable_rec_2(j, l, sequence, memo, ligne)
 
         if reponse_b and not(reponse_n) :   # le test blanc réussit mais le test noir échoue
+            ligne[index] = BLANC
             A[0][i][index] =  BLANC
             cases_colorees.append(index)      # mis a jour des indices des cases colorées
             
         if reponse_n and not(reponse_b) :   # le test noir réussit mais le test blanc échoue
+            ligne[index] = NOIR
             A[0][i][index] =  NOIR
             cases_colorees.append(index)
 
         if reponse_b and reponse_n :        # les 2 tests reussissent, on peut rien déduire sur cette case
+            ligne[index] = VIDE
             A[0][i][index] =  VIDE
 
         if not(reponse_b) and not(reponse_n):   # les 2 tests echouent
             print("Le puzzle n'a pas de solution")
+            memoisation[(tuple(ligne), tuple(cases_colorees))] =  False, original,[]
             return False, original,[]
-        return colore_ligne_rec(A, i, index + 1, cases_colorees)
-          
+        
+        memoisation[(tuple(ligne), tuple(cases_colorees))]= colore_ligne_rec(A, i, index + 1, cases_colorees, memoisation)
+        return memoisation[(tuple(ligne), tuple(cases_colorees))]         
+
     # Cas ou la case est deja colorée
     else :
-        return colore_ligne_rec(A, i, index+1, cases_colorees)
+        memoisation[(tuple(ligne), tuple(cases_colorees))]= colore_ligne_rec(A, i, index+1, cases_colorees, memoisation)
+        return memoisation[(tuple(ligne), tuple(cases_colorees))]
 
 def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : list()):
     """
@@ -259,10 +271,11 @@ def coloration(A: list(list())):
     m = len(A[0][0])
     lignes_a_voir = [i for i in range(n)]
     colonnes_a_voir = [i for i in range(m)] #en supposant que les lignes ont toutes le même nombre de colonnes
+    memoisation_ligne = {}
 
     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
-            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [])
+            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], memoisation_ligne)
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
             colonnes_a_voir = colonnes_a_voir + new_colonnes
