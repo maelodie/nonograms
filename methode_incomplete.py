@@ -271,10 +271,10 @@ def coloration(A: list(list())):
     m = len(A[0][0])
     lignes_a_voir = [i for i in range(n)]
     colonnes_a_voir = [i for i in range(m)] #en supposant que les lignes ont toutes le même nombre de colonnes
-    memoisation_ligne = {}
 
     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
+            memoisation_ligne = {}
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], memoisation_ligne)
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
