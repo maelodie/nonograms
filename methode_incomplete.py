@@ -264,7 +264,7 @@ def coloration(A: list(list())):
         for i in lignes_a_voir:
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [])
             if not possibility:
-                return False, grille_vide(n, m)
+                return False, (grille_vide(n, m), None, None)
             colonnes_a_voir = colonnes_a_voir + new_colonnes
             lignes_a_voir.remove(i)
         
@@ -272,7 +272,7 @@ def coloration(A: list(list())):
             possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [])
             #possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
             if not possibility:
-                return False, grille_vide(n, m)
+                return False, (grille_vide(n, m), None, None)
             lignes_a_voir = lignes_a_voir + new_lignes
             colonnes_a_voir.remove(j)  
     for i in range(n):
@@ -296,7 +296,7 @@ def propagation(src) :
     if ok :
         print("Voici la soloution du puzzle : ")
         affichage(res[0])
-    if not ok :
+    if ok == False :
         print("Le puzzle n'a pas de solution")
     if ok == None :
         print("Nous pouvons rien déduire")

@@ -1,4 +1,5 @@
 from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2, colore_ligne_rec, coloration, propagation
+from methode_complete import enumeration
 from config import *
 
 ##################
@@ -117,7 +118,8 @@ print("Tous les tests sont passés pour colore_ligne_rec !")
 ##################
 # Test cases for coloration
 ##################
-# A = lire_instance("instances/10.txt")
-# affichage((coloration(A))[1][0])
+A = lire_instance("instances/12.txt")
+b, res =  enumeration(A)
+affichage(res[0])
 
-propagation("instances/0.txt")
+# propagation("instances/12.txt")
