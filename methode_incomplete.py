@@ -174,12 +174,12 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
             memoisation[(tuple(ligne), tuple(cases_colorees))] =  False, original,[]
             return False, original,[]
         
-        memoisation[(tuple(ligne), tuple(cases_colorees))]= colore_ligne_rec(A, i, index + 1, cases_colorees, memoisation)
+        memoisation[(tuple(ligne), tuple(cases_colorees))] = colore_ligne_rec(A, i, index + 1, cases_colorees, memoisation)
         return memoisation[(tuple(ligne), tuple(cases_colorees))]         
 
     # Cas ou la case est deja colorée
     else :
-        memoisation[(tuple(ligne), tuple(cases_colorees))]= colore_ligne_rec(A, i, index+1, cases_colorees, memoisation)
+        memoisation[(tuple(ligne), tuple(cases_colorees))] = colore_ligne_rec(A, i, index+1, cases_colorees, memoisation)
         return memoisation[(tuple(ligne), tuple(cases_colorees))]
 
 def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : list(), memoisation):
@@ -231,17 +231,20 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
         #déductions en fonction des valeurs de reponse_b et reponse_n
 
         #réussite du test blanc mais pas du test noir
-        if reponse_b and not(reponse_n) :   
+        if reponse_b and not(reponse_n) : 
+            colonne[index] = BLANC  
             A[0][index][j] =  BLANC
             cases_colorees.append(index)     
         
         #réussite du test noir mais pas du test blanc
-        if reponse_n and not(reponse_b) :   
+        if reponse_n and not(reponse_b) : 
+            colonne[index] = NOIR  
             A[0][index][j]  =  NOIR
             cases_colorees.append(index)
 
         #réussite des deux tests
-        if reponse_b and reponse_n :      
+        if reponse_b and reponse_n : 
+            colonne[index] = VIDE     
             A[0][index][j]  =  VIDE
 
          #echec des deux tests
@@ -281,16 +284,14 @@ def coloration(A: list(list())):
 
     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
-            memoisation_ligne = {}
-            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], memoisation_ligne)
+            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
             colonnes_a_voir = colonnes_a_voir + new_colonnes
             lignes_a_voir.remove(i)
         
         for j in colonnes_a_voir:
-            memoisation_colonne = {}
-            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], memoisation_colonne)
+            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], {})
             
             #possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
             if not possibility:

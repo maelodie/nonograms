@@ -24,25 +24,25 @@ def colorier_et_propager(A: list(list()), i : int, j : int, c):
     A_prime = copy.deepcopy(A) #O(nm) parce qu'il faut parcourir chaque élément de A pour créer une nouvelle copie
     n = len(A[0])
     m = len(A[0][0])
-    A[0][i][j] = c       # on colorie la case (i,j) avec la couleur c
+    A_prime[0][i][j] = c       # on colorie la case (i,j) avec la couleur c
     lignes_a_voir = [i]  # comme dans le pseudo-code
     colonnes_a_voir = [j] 
-
     while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
-            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [])
-            if not possibility:
+            possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
+            print("check")
+            if possibility == False:
                 return False, (grille_vide(n, m), None, None)
-            colonnes_a_voir = list(set(colonnes_a_voir + new_colonnes))
+            colonnes_a_voir = colonnes_a_voir + new_colonnes
             lignes_a_voir.remove(i)
-        
+        print("fin")
         for j in colonnes_a_voir:
-            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [])
-            #possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
+            possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], {})
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
-            lignes_a_voir = list(set(lignes_a_voir + new_lignes))
+            lignes_a_voir = lignes_a_voir + new_lignes
             colonnes_a_voir.remove(j)  
+   
     for i in range(n):
         for j in range(m):
             if A_prime[0][i][j] == VIDE:
@@ -61,13 +61,7 @@ def prochaine_case_indeterminee(grille, k):
         if grille[ligne][colonne] == VIDE:
             return i
     
-
-def trouvek(A,i,j,M,N):
-    for i2 in range(i,N):
-        for j2 in range(j,M):
-            if (A[0][i2][j2] == VIDE):
-                return M*i2+j2
-    return M*N
+    return nb_colonnes * nb_lignes
 
 def enum_rec(A : list(list()), k : int, c) :
     """
@@ -93,23 +87,31 @@ def enum_rec(A : list(list()), k : int, c) :
     i  = k // m      # indice de la ligne de la case k
     j = k % m       # indice de la colonne de la case k
 
-    possible, A_prime = colorier_et_propager(A, i,j,c)
-  
-    if possible :
-        return True,A_prime
+    possible, A_prime = colorier_et_propager(A, i, j, c)
+    
+    if possible == True:
+        return True, A_prime
+    
     if possible == False:
         return False, (grille_vide(n,m), None, None)
-  
-    k_prime = trouvek(A_prime, i, j, m , n)
+        
+    #détermination de la prochaine case
+    k_prime = prochaine_case_indeterminee(A_prime[0], k)
     print(k_prime)
+
     return enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR)
 
 def enumeration(A : list(list())) :
     possible, A_prime = coloration(A)
-
-    if possible == False :
-        n = len(A[0])               # nb_lignes 
-        m = len(A[0][0])            # nb_colonnes
-        return False, (grille_vide(n,m), None, None)
+    if possible == False:
+        return False, A
     
-    return enum_rec(A_prime,0, BLANC) or enum_rec(A_prime,0, BLANC)
+    essai_blanc, A_prime2 = enum_rec(A_prime, 0, NOIR)
+    if essai_blanc:
+        return True, A_prime2
+    
+    essai_noir, A_prime3 = enum_rec(A_prime, 0, NOIR)
+    if essai_noir:
+        return True, A_prime3
+
+    return False, A

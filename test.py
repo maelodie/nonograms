@@ -87,28 +87,28 @@ fichier_instance = "instances/0.txt"
 A = lire_instance(fichier_instance)
 index = 0
 cases_colorees = []
-b, m, cases = colore_ligne_rec(A, 0, index, cases_colorees)
+b, m, cases = colore_ligne_rec(A, 0, index, cases_colorees, {})
 assert b == True
 assert cases == [2]
 
 A = lire_instance(fichier_instance)
 index = 0
 cases_colorees = []
-b, m, cases = colore_ligne_rec(A, 1, index, cases_colorees)
+b, m, cases = colore_ligne_rec(A, 1, index, cases_colorees, {})
 assert b == True
 assert cases == [0,1,2,3,4]
 
 A = lire_instance(fichier_instance)
 index = 0
 cases_colorees = []
-b, m, cases = colore_ligne_rec(A, 2, index, cases_colorees)
+b, m, cases = colore_ligne_rec(A, 2, index, cases_colorees, {})
 assert b == True
 assert cases == [0,1,2,3,4]
 
 A = lire_instance(fichier_instance)
 index = 0
 cases_colorees = []
-b, m, cases = colore_ligne_rec(A, 3, index, cases_colorees)
+b, m, cases = colore_ligne_rec(A, 3, index, cases_colorees, {})
 assert b == True
 assert cases == [2]
 
@@ -122,4 +122,3 @@ A = lire_instance("instances/12.txt")
 b, res =  enumeration(A)
 affichage(res[0])
 
-# propagation("instances/12.txt")
