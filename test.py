@@ -118,7 +118,7 @@ print("Tous les tests sont passés pour colore_ligne_rec !")
 ##################
 # Test cases for coloration
 ##################
-A = lire_instance("instances/15.txt")
+A = lire_instance("instances/16.txt")
 b, res =  enumeration(A)
 affichage(res[0])
 

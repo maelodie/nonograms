@@ -27,27 +27,22 @@ def colorier_et_propager(A: list(list()), i : int, j : int, c):
     A_prime[0][i][j] = c       # on colorie la case (i,j) avec la couleur c
     lignes_a_voir = [i]  # comme dans le pseudo-code
     colonnes_a_voir = [j] 
-    while len(lignes_a_voir) > 0 or len(colonnes_a_voir) > 0:
+    while len(lignes_a_voir) != 0 or len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
          
             if possibility == False:
                 return False, (grille_vide(n, m), None, None)
-            # colonnes_a_voir = colonnes_a_voir + new_colonnes
-            # lignes_a_voir.remove(i)
-            colonnes_a_voir.extend(x for x in new_colonnes if x not in colonnes_a_voir)
-            lignes_a_voir = [x for x in lignes_a_voir if not(x==i)]
-        
+            colonnes_a_voir = colonnes_a_voir + new_colonnes
+            lignes_a_voir = [x for x in lignes_a_voir if x != i]
+
         for j in colonnes_a_voir:
             possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], {})
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
-            # lignes_a_voir = lignes_a_voir + new_lignes
-            # colonnes_a_voir.remove(j)  
-            lignes_a_voir.extend(x for x in new_lignes if x not in lignes_a_voir)
-            colonnes_a_voir = [x for x in colonnes_a_voir if not(x==j)]
+            lignes_a_voir = lignes_a_voir + new_lignes  
+            colonnes_a_voir = [x for x in colonnes_a_voir if x!=j]
 
-   
     for i in range(n):
         for j in range(m):
             if A_prime[0][i][j] == VIDE:

@@ -288,7 +288,7 @@ def coloration(A: list(list())):
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
             colonnes_a_voir = colonnes_a_voir + new_colonnes
-            lignes_a_voir.remove(i)
+            lignes_a_voir = [x for x in lignes_a_voir if x != i]
         
         for j in colonnes_a_voir:
             possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], {})
@@ -296,8 +296,9 @@ def coloration(A: list(list())):
             #possibility, A_prime, new_lignes = colore_colonne(A_prime, j)
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
-            lignes_a_voir = lignes_a_voir + new_lignes
-            colonnes_a_voir.remove(j)  
+            lignes_a_voir = lignes_a_voir + new_lignes  
+            colonnes_a_voir = [x for x in colonnes_a_voir if x!=j]
+            
     for i in range(n):
         for j in range(m):
             if A_prime[0][i][j] == VIDE:
