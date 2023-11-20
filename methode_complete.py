@@ -27,21 +27,26 @@ def colorier_et_propager(A: list(list()), i : int, j : int, c):
     A_prime[0][i][j] = c       # on colorie la case (i,j) avec la couleur c
     lignes_a_voir = [i]  # comme dans le pseudo-code
     colonnes_a_voir = [j] 
-    while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
+    while len(lignes_a_voir) > 0 or len(colonnes_a_voir) > 0:
         for i in lignes_a_voir:
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
-            print("check")
+         
             if possibility == False:
                 return False, (grille_vide(n, m), None, None)
-            colonnes_a_voir = colonnes_a_voir + new_colonnes
-            lignes_a_voir.remove(i)
-        print("fin")
+            # colonnes_a_voir = colonnes_a_voir + new_colonnes
+            # lignes_a_voir.remove(i)
+            colonnes_a_voir.extend(x for x in new_colonnes if x not in colonnes_a_voir)
+            lignes_a_voir = [x for x in lignes_a_voir if not(x==i)]
+        
         for j in colonnes_a_voir:
             possibility, A_prime, new_lignes = colore_colonne_rec(A_prime, j, 0, [], {})
             if not possibility:
                 return False, (grille_vide(n, m), None, None)
-            lignes_a_voir = lignes_a_voir + new_lignes
-            colonnes_a_voir.remove(j)  
+            # lignes_a_voir = lignes_a_voir + new_lignes
+            # colonnes_a_voir.remove(j)  
+            lignes_a_voir.extend(x for x in new_lignes if x not in lignes_a_voir)
+            colonnes_a_voir = [x for x in colonnes_a_voir if not(x==j)]
+
    
     for i in range(n):
         for j in range(m):
@@ -97,21 +102,18 @@ def enum_rec(A : list(list()), k : int, c) :
         
     #détermination de la prochaine case
     k_prime = prochaine_case_indeterminee(A_prime[0], k)
-    print(k_prime)
-
-    return enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR)
+    return (enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR))
 
 def enumeration(A : list(list())) :
     possible, A_prime = coloration(A)
-    if possible == False:
-        return False, A
-    
-    essai_blanc, A_prime2 = enum_rec(A_prime, 0, NOIR)
-    if essai_blanc:
-        return True, A_prime2
-    
-    essai_noir, A_prime3 = enum_rec(A_prime, 0, NOIR)
-    if essai_noir:
-        return True, A_prime3
 
-    return False, A
+    if possible == True :
+        return True, A_prime
+    
+    if possible == False :
+        n = len(A[0])               # nb_lignes 
+        m = len(A[0][0])            # nb_colonnes
+        return False, (grille_vide(n,m), None, None)
+    
+    k= prochaine_case_indeterminee(A_prime[0], 0)
+    return (enum_rec(A_prime, k, BLANC) or enum_rec(A_prime, k, NOIR))

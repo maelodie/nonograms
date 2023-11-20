@@ -41,9 +41,9 @@ def est_coloriable_rec(j: int, l: int, sequence: list, memo: list):
                 return False
         
         # Cas 2c : relation de récurrence
-        memo[j][l] = est_coloriable_rec(j-1, l, sequence, memo) or est_coloriable_rec(j-sequence[l-1]-1, l-1, sequence, memo)
+        memo[j][l] = (est_coloriable_rec(j-1, l, sequence, memo) or est_coloriable_rec(j-sequence[l-1]-1, l-1, sequence, memo))
         return memo[j][l]
-    
+ 
 def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_colorees : list):
     """
     Vérifie récursivement si les l premieres bloques d'une séquence peuvent être coloriées jusqu'à la colonne j dans la ligne, avec mémoisation.
@@ -104,9 +104,9 @@ def est_coloriable_rec_2(j: int, l: int, sequence: list, memo: list, cases_color
                             possible = est_coloriable_rec_2(j - sequence[l-1]-1, l-1, sequence, memo, cases_colorees)
                             memo[j][l] = possible
                             return memo[j][l]
-                else :
-                    memo[j][l] = False
-                    return False
+               
+            memo[j][l] = False
+            return False
 
 def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list(), memoisation):
     """
@@ -282,7 +282,7 @@ def coloration(A: list(list())):
     lignes_a_voir = [i for i in range(n)]
     colonnes_a_voir = [i for i in range(m)] #en supposant que les lignes ont toutes le même nombre de colonnes
 
-    while len(lignes_a_voir) != 0 and len(colonnes_a_voir) != 0:
+    while len(lignes_a_voir) != 0 or len(colonnes_a_voir) != 0:
         for i in lignes_a_voir:
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
             if not possibility:
