@@ -1,5 +1,5 @@
-from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2, colore_ligne_rec, coloration, propagation
-from methode_complete import enumeration
+from  methode_incomplete import est_coloriable_rec, est_coloriable_rec_2, colore_ligne_rec, coloration, propagation_incomplete
+from methode_complete import enumeration, propagation_complete
 from config import *
 
 ##################
@@ -118,7 +118,6 @@ print("Tous les tests sont passés pour colore_ligne_rec !")
 ##################
 # Test cases for coloration
 ##################
-A = lire_instance("instances/16.txt")
-b, res =  enumeration(A)
-affichage(res[0])
+instance = "instances/14.txt"
+propagation_complete(instance)
 

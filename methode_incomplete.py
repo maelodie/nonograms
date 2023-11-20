@@ -260,6 +260,7 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
     else:
         memoisation[(tuple(colonne), tuple(cases_colorees))] = colore_colonne_rec(A, j, index + 1, cases_colorees, memoisation)
         return memoisation[(tuple(colonne), tuple(cases_colorees))] 
+    
 def coloration(A: list(list())):
     """
     Colorie une grille initialement VIDE, en prenant en compte les séquences des lignes, et celles des colonnes.
@@ -282,7 +283,7 @@ def coloration(A: list(list())):
     lignes_a_voir = [i for i in range(n)]
     colonnes_a_voir = [i for i in range(m)] #en supposant que les lignes ont toutes le même nombre de colonnes
 
-    while len(lignes_a_voir) != 0 or len(colonnes_a_voir) != 0:
+    while len(lignes_a_voir) > 0 or len(colonnes_a_voir) > 0:
         for i in lignes_a_voir:
             possibility, A_prime, new_colonnes = colore_ligne_rec(A_prime, i, 0, [], {})
             if not possibility:
@@ -306,7 +307,7 @@ def coloration(A: list(list())):
             
     return True, A_prime
 
-def propagation(src) :
+def propagation_incomplete(src) :
     """
     Affiche une visualisation de la grille apres la coloration selon une instance
 

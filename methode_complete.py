@@ -50,18 +50,31 @@ def colorier_et_propager(A: list(list()), i : int, j : int, c):
             
     return True, A_prime
 
-def prochaine_case_indeterminee(grille, k):
-    nb_lignes = len(grille)
-    nb_colonnes = len(grille[0])
-
-    for i in range(k + 1, nb_lignes * nb_colonnes):
-        ligne = i // nb_colonnes
-        colonne = i % nb_colonnes
-
-        if grille[ligne][colonne] == VIDE:
-            return i
+def prochaine_case_indeterminee(grille,k) :
+    """
+    Determine k', le numéro de la premiere case VIDE tel que k' > k
     
-    return nb_colonnes * nb_lignes
+    Parameters
+    ----------
+    - grille : La grille dans son état actuel
+    - k : numero de la case ou on se trouve
+
+    Returns
+    -------
+    - k' :
+        numéro de la premiere case vide situé apres k
+    """
+    nb_lignes = len(grille)
+    nb_colonnes= len(grille[0])
+
+    i = k // nb_colonnes
+    j = k % nb_colonnes
+
+    for p in range(i,nb_lignes):
+        for q in range(j,nb_colonnes):
+            if (grille[p][q] == VIDE):
+                return p*nb_colonnes+q
+    return nb_lignes*nb_colonnes
 
 def enum_rec(A : list(list()), k : int, c) :
     """
@@ -75,7 +88,9 @@ def enum_rec(A : list(list()), k : int, c) :
 
     Returns 
     -------
-
+    b, A:
+        - True si le coloriage est possible, False sinon
+        - A : La grille obtenue
     """
     n = len(A[0])               # nb_lignes 
     m = len(A[0][0])            # nb_colonnes 
@@ -96,19 +111,50 @@ def enum_rec(A : list(list()), k : int, c) :
         return False, (grille_vide(n,m), None, None)
         
     #détermination de la prochaine case
-    k_prime = prochaine_case_indeterminee(A_prime[0], k)
+    # k_prime = trouvek(A_prime, i,j,m,n)
+    k_prime = prochaine_case_indeterminee(copy.deepcopy(A_prime[0]),k)
     return (enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR))
 
 def enumeration(A : list(list())) :
+    """
+    """
     possible, A_prime = coloration(A)
 
     if possible == True :
         return True, A_prime
     
     if possible == False :
-        n = len(A[0])               # nb_lignes 
-        m = len(A[0][0])            # nb_colonnes
-        return False, (grille_vide(n,m), None, None)
+        return False, A_prime
     
-    k= prochaine_case_indeterminee(A_prime[0], 0)
-    return (enum_rec(A_prime, k, BLANC) or enum_rec(A_prime, k, NOIR))
+    # k = prochaine_case_indeterminee(A,A_prime, 0)
+    n = len(A[0])
+    m =  len(A[0][0])
+    k = prochaine_case_indeterminee(copy.deepcopy(A_prime[0]),0)
+    possible_b, A_prime_b = enum_rec(A_prime,k,BLANC)
+    if possible_b :
+        return possible_b, A_prime_b
+    
+    possible_n, A_prime_n = enum_rec(A_prime,k,NOIR)
+    if possible_n:
+        return possible_n, A_prime_n
+    
+    return False, A_prime
+
+def propagation_complete(src) :
+    """
+    Affiche une visualisation de la grille apres la coloration selon une instance
+
+    Parameters
+    ----------
+    - src : fichier source de l'instance a représenté
+    """
+    A =  lire_instance(src)
+    ok,res = enumeration(A)
+
+    if ok :
+        print("Voici la solution du puzzle : ")
+        affichage(res[0])
+    if ok == False :
+        print("Le puzzle n'a pas de solution")
+    if ok == None :
+        print("Nous pouvons rien déduire")
