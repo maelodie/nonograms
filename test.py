@@ -118,6 +118,6 @@ print("Tous les tests sont passés pour colore_ligne_rec !")
 ##################
 # Test cases for coloration
 ##################
-instance = "instances/14.txt"
+instance = "instances/1.txt"
 propagation_complete(instance)
 

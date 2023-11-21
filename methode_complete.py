@@ -150,10 +150,10 @@ def propagation_complete(src) :
     """
     A =  lire_instance(src)
     ok,res = enumeration(A)
-
+    filename = src + "complete.jpeg"
     if ok :
-        print("Voici la solution du puzzle : ")
-        affichage(res[0])
+        print("Le puzzle " + src + " a une solution")
+        dessin(res[0],filename)
     if ok == False :
         print("Le puzzle n'a pas de solution")
     if ok == None :

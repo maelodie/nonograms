@@ -317,10 +317,11 @@ def propagation_incomplete(src) :
     """
     A =  lire_instance(src)
     (ok,res) = coloration(A)
+    filename = src + "imcomplete.jpeg"
 
     if ok :
-        print("Voici la solution du puzzle : ")
-        affichage(res[0])
+        print("Le puzzle " + src + " a une solution")
+        dessin(res[0], filename)
     if ok == False :
         print("Le puzzle n'a pas de solution")
     if ok == None :

@@ -1,5 +1,6 @@
 import time
-
+import matplotlib.pyplot as plt
+import numpy as np
 BLANC = 1
 VIDE = 0
 NOIR = -1
@@ -59,25 +60,6 @@ def lire_instance(src):
     grille = grille_vide(len(sequences_lignes), len(sequences_colonnes))
     return grille, sequences_lignes, sequences_colonnes
 
-def affichage(grille):
-    """
-    Affiche une représentation visuelle d'une grille.
-
-    Parameters 
-    ----------
-    grille : grille a 2 dimensions a représenté
-    """
-    for i in range(len(grille)):
-        for j in range(len(grille[0])):
-            if grille[i][j] == VIDE:
-                print("", end = '')
-            if grille[i][j] == BLANC:
-                print("⬜", end = '')
-            if grille[i][j] == NOIR:
-                print("⬛", end = '')
-        print()
-    print()
-
 def timeFormat(listTemps: list):
     res = []
     for temps in listTemps:
@@ -87,3 +69,16 @@ def timeFormat(listTemps: list):
         formatted_time = "{:02d}:{:02d}:{:02d}".format(heure, minute, seconde)
         res.append(formatted_time)
     return res
+
+def dessin(matrice, filename):
+    cmap = plt.cm.colors.ListedColormap(['black', 'white'])
+
+    plt.matshow(np.array(matrice), cmap=cmap, vmin=-1, vmax=1, aspect='equal')
+    for i in range(len(matrice) + 1):
+        plt.axhline(i - 0.5, color='black', linewidth=0.5)
+    for j in range(len(matrice[0]) + 1):
+        plt.axvline(j - 0.5, color='black', linewidth=0.5)
+
+    plt.xticks([])
+    plt.yticks([])
+    plt.savefig(filename, bbox_inches='tight', pad_inches=0.1)
