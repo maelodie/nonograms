@@ -111,7 +111,6 @@ def enum_rec(A : list(list()), k : int, c) :
         return False, (grille_vide(n,m), None, None)
         
     #détermination de la prochaine case
-    # k_prime = trouvek(A_prime, i,j,m,n)
     k_prime = prochaine_case_indeterminee(copy.deepcopy(A_prime[0]),k)
     return (enum_rec(A_prime, k_prime, BLANC) or enum_rec(A_prime, k_prime, NOIR))
 
@@ -126,9 +125,6 @@ def enumeration(A : list(list())) :
     if possible == False :
         return False, A_prime
     
-    # k = prochaine_case_indeterminee(A,A_prime, 0)
-    n = len(A[0])
-    m =  len(A[0][0])
     k = prochaine_case_indeterminee(copy.deepcopy(A_prime[0]),0)
     possible_b, A_prime_b = enum_rec(A_prime,k,BLANC)
     if possible_b :
