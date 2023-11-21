@@ -2,11 +2,11 @@ from methode_incomplete import *
 from methode_complete import *
 from config import *
 
-type = input("Entrer sur 'I' pour la méthode incomplète et 'C' pour la méthode complètes sur toutes les instances possibles.\nPour une instance particulière, appuyer 'A'\n")
+type = input("Entrer sur 'I' pour la méthode incomplète et 'C' pour la méthode complète sur toutes les instances possibles.\nPour une instance particulière, appuyer 'A'\n")
 
 if type == 'I':
     temps_exec = []            
-    for i in range(11) :
+    for i in range(17) :
         instance = ("instances/"+str(i)+".txt")
         debut = time.time()
         res = propagation_incomplete(instance)
