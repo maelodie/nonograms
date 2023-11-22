@@ -70,8 +70,14 @@ def timeFormat(listTemps: list):
         res.append(formatted_time)
     return res
 
+def timeFormatSeconds(temps: float):
+    heure = int(round(temps // 3600))
+    minute = int(round((temps % 3600) // 60))
+    seconde = int(round(temps % 60))
+    return "{:02d}:{:02d}:{:02d}".format(heure, minute, seconde)
+
 def dessin(matrice, filename):
-    cmap = plt.cm.colors.ListedColormap(['black', 'white'])
+    cmap = plt.cm.colors.ListedColormap(['black', 'grey', 'white'])
 
     plt.matshow(np.array(matrice), cmap=cmap, vmin=-1, vmax=1, aspect='equal')
     for i in range(len(matrice) + 1):

@@ -33,7 +33,7 @@ elif type ==  'A':
         res = propagation_incomplete(instance)
         fin = time.time()
         exec = fin - debut
-        print("Le temps d'exécution est:", timeFormat(exec))
+        print("Le temps d'exécution est:", timeFormatSeconds(exec))
 
     else:
         instance = ("instances/"+ str(instance_number) +".txt")
@@ -41,5 +41,5 @@ elif type ==  'A':
         res = propagation_complete(instance)
         fin = time.time()
         exec = fin - debut
-        print("Le temps d'exécution est:", timeFormat(exec))
+        print("Le temps d'exécution est:", timeFormatSeconds(exec))
 
