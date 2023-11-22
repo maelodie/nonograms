@@ -118,6 +118,8 @@ print("Tous les tests sont passés pour colore_ligne_rec !")
 ##################
 # Test cases for coloration
 ##################
-instance = "instances/1.txt"
-propagation_complete(instance)
+instance = "instances/15.txt"
+filename = instance + "incomplete.jpeg"
+_, res = coloration(lire_instance(instance))
+dessin(res[0], filename)
 
