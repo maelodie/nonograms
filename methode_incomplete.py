@@ -171,7 +171,6 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
             A[0][i][index] =  VIDE
 
         if not(reponse_b) and not(reponse_n):   # les 2 tests echouent
-            print("Le puzzle n'a pas de solution")
             memoisation[(tuple(ligne), tuple(cases_colorees))] =  False, original,[]
             return False, original,[]
         
@@ -251,7 +250,6 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
 
          #echec des deux tests
         if not(reponse_b) and not(reponse_n):  
-            print("Le puzzle n'a pas de solution")
             memoisation[(tuple(colonne), tuple(cases_colorees))] =  False, original,[]
             return False, original, []
         

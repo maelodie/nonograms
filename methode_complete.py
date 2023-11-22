@@ -78,7 +78,7 @@ def prochaine_case_indeterminee(grille,k) :
 
 def enum_rec(A : list(list()), k : int, c) :
     """
-    Enumere les coloriages potentiels de la grille A si la case k est de couleur c.
+    Enumere par recurrence les coloriages potentiels de la grille A si la case k est de couleur c.
     
     Parameters 
     ---------
@@ -116,6 +116,17 @@ def enum_rec(A : list(list()), k : int, c) :
 
 def enumeration(A : list(list())) :
     """
+    Enumereles coloriages potentiels de la grille A.
+    
+    Parameters 
+    ---------
+    A : La grille dans son état actuelle. A = grille, sequences_lignes, sequences_colonnes
+
+    Returns 
+    -------
+    b, A:
+        - True si le coloriage est possible, False sinon
+        - A : La grille obtenue
     """
     possible, A_prime = coloration(A)
 
