@@ -118,6 +118,7 @@ def colore_ligne_rec(A: list(list()), i: int, index : int, cases_colorees : list
     i : la ligne a colorié
     index : index de la case avec laquelle on commence
     cases_colorees : liste des indices des cases qu'on colorie
+    memoisation : dictionnaire pour la memoisation pour cle le couple (ligne,cases_colorees)
 
     Returns
     -------
@@ -192,6 +193,7 @@ def colore_colonne_rec(A: list(list()), j: int, index : int, cases_colorees : li
     j : la colonne a colorié
     index : index de la case avec laquelle on commence
     cases_colorees : liste des indices des cases qu'on colorie
+    memoisation : dictionnaire pour la memoisation pour cle le couple (ligne,cases_colorees)
 
     Returns
     -------
