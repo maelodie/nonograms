@@ -5,12 +5,12 @@ We consider a grid with N rows numbered from 0 to $N-1$ and $M$ columns numbered
 
 Consider the following example:
 
-![grid 1](.image.png)
+![grid 1](assets/image.png)
 
 The 3 in the row $l_0$ means that it contains a block of three consecutive black cells. The sequence `1 2` in column $c_2$ means that it contains two blocks: the first of one black cell, and the second of two black cells (blocks are separated by at least one white cell).
 A solution to the game is:
 
-![grid 2](.image-1.png)
+![grid 2](assets/image-1.png)
 
 The goal of the project is to construct, if possible, a solution (a black-white coloring of the cells) that satisfies the constraints.
 
@@ -43,9 +43,9 @@ Where execution modes are:
 ## Solution examples
 <u>**Grid 10:**</u>
 
-![wolf](.wolf.jpeg)
+![wolf](assets/wolf.jpeg)
 
 
 <u>**Grid 15:**</u>
 
-![panda](.panda.jpeg)
+![panda](assets/panda.jpeg)
