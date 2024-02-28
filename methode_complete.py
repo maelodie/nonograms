@@ -147,19 +147,19 @@ def enumeration(A : list(list())) :
     
     return False, A_prime
 
-def propagation_complete(src) :
+def propagation_complete(gridNumber) :
     """
     Affiche une visualisation de la grille apres la coloration selon une instance
 
     Parameters
     ----------
-    - src : fichier source de l'instance a représenté
+    - gridNumber : Numéro de la grille à colorier
     """
-    A =  lire_instance(src)
+    A =  lire_instance(gridNumber)
     ok,res = enumeration(A)
-    filename = src + "complete.jpeg"
+    filename = "out/complete/" + str(gridNumber) + "_complete.jpeg"
     if ok :
-        print("Le puzzle " + src + " a une solution")
+        print("Le puzzle " + str(gridNumber) + " a une solution")
         dessin(res[0],filename)
     if ok == False :
         print("Le puzzle n'a pas de solution")

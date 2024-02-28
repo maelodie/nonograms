@@ -20,13 +20,13 @@ def grille_vide(n: int, m: int):
     """
     return [[VIDE for _ in range(m)] for _ in range(n)]
 
-def lire_instance(src):
+def lire_instance(gridNumber):
     """
     Lecture d'un fichier .txt contenant une instance de sequences de lignes et de colonnes.
 
     Parameters
     ----------
-    - src : fichier source de l'instance a lire
+    - src : numéro de la grille à lire
 
     Returns
     -------
@@ -41,6 +41,7 @@ def lire_instance(src):
     sequences_lignes = []
     sequences_colonnes = []
 
+    src = ("grids/"+str(gridNumber)+".txt")
     with open(src, 'r') as f:
         lignes = f.readlines()
 
